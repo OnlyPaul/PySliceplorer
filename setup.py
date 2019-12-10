@@ -9,5 +9,9 @@ setup(
     author_email='pavares.cha@gmail.com',
     license='MIT',
     packages=['pysliceplorer'],
+    install_requires=[
+        'numpy',
+        'sobol_seq'
+      ],
     zip_safe=False
 )
