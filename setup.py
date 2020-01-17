@@ -10,7 +10,11 @@ setup(
     license='MIT',
     packages=['pysliceplorer'],
     install_requires=[
+        'bokeh',
+        'cffi',
         'numpy',
+        'matplotlib',
+        'rpy2',
         'sobol_seq'
       ],
     zip_safe=False

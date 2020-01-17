@@ -4,8 +4,8 @@ import math
 import sys
 sys.path.append('../')
 
-from pysliceplorer import hyperslice
-from pysliceplorer import sliceplorer
+from pysliceplorer import hyperslice_core
+from pysliceplorer import sliceplorer_core
 
 np.set_printoptions(threshold=np.nan)
 np.seterr(divide='ignore', invalid='ignore')
@@ -20,7 +20,7 @@ def g(x, y):
 
 dim = 3
 c = (0, 0, 0.2)
-test_var = hyperslice(f, -1, 1, dim, c, n_seg=100)
+test_var = hyperslice_core(f, -1, 1, dim, c, n_seg=100)
 
 # plotting things so we can see
 fig, axs = plt.subplots(dim, dim)
@@ -40,7 +40,7 @@ for i in range(0, dim):
                              test_var.data(j, dim - i - 1), cmap='pink')
 
 
-test_var2 = sliceplorer(g, mn=-5, mx=5, dim=2, n_fpoint=160)
+test_var2 = sliceplorer_core(g, mn=-5, mx=5, dim=2, n_fpoint=160)
 fig2, axs2 = plt.subplots(2)
 
 # plot the 2nd figure

@@ -1,4 +1,5 @@
 import json
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -30,11 +31,11 @@ class Slice2d:
                 json_dict['entries'][i][j] = self.__plot[(i, j)]
         return json.dumps(json_dict)
 
-# basically hyperslice(function_spec, focus_point), which has function_spec spreading to
+# hyperslice(function_spec, focus_point), which has function_spec spreading to
 # f: function defined from outer program
 # mn, mx: min and max range of computation
 # dim: number of dimension of the function, f
-def hyperslice(f, mn, mx, dim, fpoint, n_seg=100):
+def hyperslice_core(f, mn, mx, dim, fpoint, n_seg=100):
     # raising simple exception to avoid standard error
     if mx <= mn:
         raise Exception('Input min exceeds max value. (Error: min >= max)')
@@ -74,3 +75,28 @@ def hyperslice(f, mn, mx, dim, fpoint, n_seg=100):
             result[(i, j)] = v.tolist()
 
     return Slice2d(result, dim, xx, yy)
+
+
+def hyperslice(f, mn, mx, dim, fpoint, n_seg=100, output=None):
+    if not output:
+        output = "fig.png"
+
+    calc_data = hyperslice_core(f, mn, mx, dim, fpoint, n_seg)
+
+    fig, axs = plt.subplots(dim, dim)
+
+    for i in range(0, dim):
+        for j in range(0, dim):
+            if i == 0:
+                x_string = 'x' + str(j + 1)
+                axs[i, j].set(xlabel=x_string)
+                axs[i, j].xaxis.set_label_position('top')
+
+            if j == 0:
+                y_string = 'x' + str(dim - i)
+                axs[i, j].set(ylabel=y_string)
+
+            axs[i, j].pcolormesh(calc_data.x_grid, calc_data.y_grid,
+                                 calc_data.data(j, dim - i - 1), cmap='pink')
+
+    plt.savefig(output)
