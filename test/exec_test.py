@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import sys
-sys.path.append('../')
 
 from pysliceplorer import hyperslice_core
 from pysliceplorer import sliceplorer_core

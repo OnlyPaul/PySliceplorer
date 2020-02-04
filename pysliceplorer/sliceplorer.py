@@ -49,7 +49,7 @@ def generate_sample_point(mn, mx, dim, n_fpoint, method='sobol'):
 # mn, mx: min and max range of computation
 # dim: number of dimension of the function, f
 # sampling method now only supports sobol sequences
-def sliceplorer_core(f, mn, mx, dim, n_fpoint, n_seg=100, method='sobol'):
+def sliceplorer_core(f, mn, mx, dim: int, n_fpoint: int, n_seg: int=100, method='sobol'):
     if mx <= mn:
         raise Exception('Input min exceeds max value. (Error: min >= max)')
 
@@ -58,6 +58,9 @@ def sliceplorer_core(f, mn, mx, dim, n_fpoint, n_seg=100, method='sobol'):
 
     if dim < 1:
         raise Exception('Sliceplorer does not support less than 1 dimension. (Error: dim < 1)')
+
+    if n_seg <= 0:
+        raise Exception('Number of linear space must be positive integer.')
 
     sample_points = generate_sample_point(mn, mx, dim, n_fpoint, method=method)
     f_vec = np.vectorize(f)

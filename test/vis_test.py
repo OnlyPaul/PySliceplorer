@@ -1,8 +1,5 @@
 import math
 import numpy as np
-import sys
-
-sys.path.append('../')
 import pysliceplorer as psp
 
 
@@ -16,18 +13,23 @@ def f(x, y, z):
            + ((1 - np.sign(-x - .39 + abs(y * 2))) / 3 * (np.sign(.6 - x) + 1) / 3) * (np.sign(x - .35) + 1) / 2
 
 
-def g(x, y):
-    return np.sin(math.pi*x) / (math.pi*x) * np.sin(math.pi*y) / (math.pi*y)
+def g(s, t, u, v):
+    return np.sin(math.pi*s) / (math.pi*s) * np.sin(math.pi*t) / (math.pi*t) * np.sin(math.pi*u) / (math.pi*u) * np.sin(math.pi*v) / (math.pi*v)
 
 
-dim = 2
+def h(s, t, u, v):
+    return ((s**4 - 16*s**2 + 5*s)+(t**4 - 16*t**2 + 5*t)+(u**4 - 16*u**2 + 5*u)+(v**4 - 16*v**2 + 5*v))/2
+
+
+dim = 4
 mn = -5
 mx = 5
 
-psp.sliceplorer(g, mn=mn, mx=mx, dim=dim, n_fpoint=100, height=400, width=800, output='vis_spl_test.html')
+psp.sliceplorer(f, mn=-1.5, mx=1.5, dim=3, n_fpoint=100, height=225, width=450, output='vis_spl_test_A.html')
 
-psp.hyperslice(f, mn=-1, mx=1, dim=3, fpoint=(0, 0, 0.2), n_seg=100)
+psp.hyperslice(h, mn=mn, mx=mx, dim=4, fpoint=(0, 0, 0, 0), n_seg=100)
 
+"""
 vertices = [
     [-1, 1, 1],
     [1, 1, 1],
@@ -51,6 +53,21 @@ config = [
     [7, 1, 3],
     [5, 4, 1], # back face
     [1, 4, 0]
+]
+"""
+
+vertices = [
+    [-1, -1, -1],
+    [1, -1, 1],
+    [-1, 1, 1],
+    [1, 1, -1]
+]
+
+config = [
+    [0, 1, 2],
+    [0, 3, 1],
+    [3, 2, 1],
+    [0, 3, 2]
 ]
 
 mn = -1.2

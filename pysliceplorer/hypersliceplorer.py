@@ -25,6 +25,10 @@ class HSlice2D:
         self.size = n_fpoint
 
     def data_by_axes(self, d1, d2):
+        if d1 < 0 or d1 >= self.dim-1:
+            raise IndexError('Hypersliceplorer: Query index out of bound')
+        if d2 < 0 or d2 >= self.dim:
+            raise IndexError('Hypersliceplorer: Query index out of bound')
         return self.__result[(d1, d2)]
 
     def data_by_point(self, fpoint):
@@ -37,9 +41,15 @@ class HSlice2D:
         json_dict = {
             'vertices': self.vertices,
             'config': self.config,
-            'size': self.size,
-            'entries': self.__result
+            'size': self.size
         }
+        entries = {}
+        for entry_name in self.__result:
+            sub_entries = {}
+            for e in self.__result[entry_name]:
+                sub_entries[str(e)] =  self.__result[entry_name][e]
+            entries[str(entry_name)] = sub_entries
+        json_dict['entries'] = entries
         return json.dumps(json_dict)
 
 
@@ -121,7 +131,7 @@ def load_r_spi():
     return robjects.globalenv['simplex.point.intersection']
 
 
-def hypersliceplorer_core(vertices, config, mn, mx, n_fpoint, method='sobol'):
+def hypersliceplorer_core(vertices, config, mn, mx, n_fpoint: int, method='sobol'):
     # nc and nr represent number of rows and columns of a single simplex respectively
     nc = dim = len(vertices[0])
     nr = len(config[0])

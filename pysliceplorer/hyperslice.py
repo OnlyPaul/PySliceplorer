@@ -31,12 +31,13 @@ class Slice2d:
                 json_dict['entries'][i][j] = self.__plot[(i, j)]
         return json.dumps(json_dict)
 
+
 # hyperslice(function_spec, focus_point), which has function_spec spreading to
 # f: function defined from outer program
 # mn, mx: min and max range of computation
 # dim: number of dimension of the function, f
-def hyperslice_core(f, mn, mx, dim, fpoint, n_seg=100):
-    # raising simple exception to avoid standard error
+def hyperslice_core(f, mn, mx, dim: int, fpoint, n_seg: int=100):
+    # raising simple exceptions to avoid standard errors
     if mx <= mn:
         raise Exception('Input min exceeds max value. (Error: min >= max)')
 
@@ -45,6 +46,9 @@ def hyperslice_core(f, mn, mx, dim, fpoint, n_seg=100):
 
     if dim < 2:
         raise Exception('Sliceplorer does not support less than 2 dimensions. (Error: dim < 2)')
+
+    if n_seg <= 0:
+        raise Exception('Number of linear space must be positive integer.')
 
     # vectorize the function so that it works with numpy array
     # and generate meshgrid for the slice
@@ -99,4 +103,5 @@ def hyperslice(f, mn, mx, dim, fpoint, n_seg=100, output=None):
             axs[i, j].pcolormesh(calc_data.x_grid, calc_data.y_grid,
                                  calc_data.data(j, dim - i - 1), cmap='pink')
 
-    plt.savefig(output)
+    fig.tight_layout()
+    plt.savefig(output, dpi=200)
