@@ -350,7 +350,7 @@ def hypersliceplorer(vertices, config, mn, mx, n_fpoint, method='sobol', width=-
     trace_grid = []
     for j in range(calc_data.dim - 1, 0, -1):
         trace_row = []
-        for i in range(0, calc_data.dim - 1):
+        for i in range(0, j):
             if i != j:
                 trace_row.append(trace[str((i, j))])
                 if j == calc_data.dim - 1:
